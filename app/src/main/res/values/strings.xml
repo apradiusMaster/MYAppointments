@@ -31,4 +31,6 @@
     <string name="item_appointment_time"> A las %1s</string>
     <string name="press_back_again">Presione una vez mas para salir</string>
     <string name="validate_appointment_description">La descripcion es demasiado corta</string>
+    <string name="label_scheduled_time">Hora de la cita</string>
+    <string name="confirm_appointment_data">Dato de la cita</string>
 </resources>

@@ -7,6 +7,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import kotlinx.android.synthetic.main.activity_create_appointment.*
+import kotlinx.android.synthetic.main.card_view_step_once.*
+import kotlinx.android.synthetic.main.card_view_step_two.*
+import kotlinx.android.synthetic.main.card_view_step_three.*
 import java.util.*
 
 class CreateAppointmentActivity : AppCompatActivity() {
@@ -25,7 +28,12 @@ class CreateAppointmentActivity : AppCompatActivity() {
                 cvStep1.visibility = View.GONE
                 cvStep2.visibility = View.VISIBLE
             }
+        }
+        btnNext2.setOnClickListener{
 
+            showAppointmentDataConfirm()
+            cvStep2.visibility = View.GONE
+            cvStep3.visibility = View.VISIBLE
         }
 
         btnConfirmAppointment.setOnClickListener {
@@ -39,6 +47,18 @@ class CreateAppointmentActivity : AppCompatActivity() {
 
         val doctorsOptions = arrayOf("doctor A", "doctor B", "doctor C")
         spinnerDoctors.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, doctorsOptions)
+    }
+
+    private  fun showAppointmentDataConfirm(){
+         tvConfirmDescription.text = etDescription.text.toString()
+         tvConfirmSpecialty.text = spinnerSpecialties.selectedItem.toString()
+
+        val selectedRadioBtnId = radioGroupType.checkedRadioButtonId
+         val selectedRadioType = radioGroupType.findViewById<RadioButton>(selectedRadioBtnId)
+         tvConfirmType.text = selectedRadioType.text.toString()
+         tvConfirmDoctorName.text = spinnerDoctors.selectedItem.toString()
+             tvCofirmDate.text = etSheduledDate.text.toString()
+             tvCofirmTime.text = selectedRadioButton?.text.toString()
     }
 
     fun onClickSheduledDate( v: View?){
@@ -117,29 +137,38 @@ class CreateAppointmentActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
 
-        if(cvStep2.visibility == View.VISIBLE){
+        when {
+            cvStep3.visibility == View.VISIBLE -> {
 
-            cvStep2.visibility = View.GONE
-            cvStep1.visibility = View.VISIBLE
-        } else if( cvStep1.visibility == View.VISIBLE){
-            val builder = AlertDialog.Builder(this)
+                cvStep3.visibility = View.GONE
+                cvStep2.visibility = View.VISIBLE
 
-            builder.setTitle("Estas seguro que desea eliminar")
-            builder.setMessage("Si acepta los datos se perderan")
-            builder.setPositiveButton("Si, acepto"){ _ , _ ->
-                finish()
             }
+            cvStep2.visibility == View.VISIBLE -> {
 
-            builder.setNegativeButton("Desea cancelar"){ dialog, _ ->
-
-                dialog.dismiss()
+                cvStep2.visibility = View.GONE
+                cvStep1.visibility = View.VISIBLE
             }
+            cvStep1.visibility == View.VISIBLE -> {
+                val builder = AlertDialog.Builder(this)
+
+                builder.setTitle("Estas seguro que desea eliminar")
+                builder.setMessage("Si acepta los datos se perderan")
+                builder.setPositiveButton("Si, acepto"){ _ , _ ->
+                    finish()
+                }
+
+                builder.setNegativeButton("Desea cancelar"){ dialog, _ ->
+
+                    dialog.dismiss()
+                }
 
 
-            val dialog =builder.create()
+                val dialog =builder.create()
 
-            dialog.show()
+                dialog.show()
 
+            }
         }
 
 

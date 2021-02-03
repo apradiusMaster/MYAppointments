@@ -1,5 +1,6 @@
 package com.example.myappointments
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,8 +19,13 @@ class CreateAppointmentActivity : AppCompatActivity() {
 
         btnNext.setOnClickListener {
 
-            cvStep1.visibility = View.GONE
-            cvStep2.visibility = View.VISIBLE
+            if(etDescription.text.toString().length <=5){
+                 etDescription.error = getString(R.string.validate_appointment_description)
+            }else{
+                cvStep1.visibility = View.GONE
+                cvStep2.visibility = View.VISIBLE
+            }
+
         }
 
         btnConfirmAppointment.setOnClickListener {
@@ -107,4 +113,36 @@ class CreateAppointmentActivity : AppCompatActivity() {
     private fun Int.twoDigits()
 
      = if(this >=10) this.toString() else "0$this"
+
+
+    override fun onBackPressed() {
+
+        if(cvStep2.visibility == View.VISIBLE){
+
+            cvStep2.visibility = View.GONE
+            cvStep1.visibility = View.VISIBLE
+        } else if( cvStep1.visibility == View.VISIBLE){
+            val builder = AlertDialog.Builder(this)
+
+            builder.setTitle("Estas seguro que desea eliminar")
+            builder.setMessage("Si acepta los datos se perderan")
+            builder.setPositiveButton("Si, acepto"){ _ , _ ->
+                finish()
+            }
+
+            builder.setNegativeButton("Desea cancelar"){ dialog, _ ->
+
+                dialog.dismiss()
+            }
+
+
+            val dialog =builder.create()
+
+            dialog.show()
+
+        }
+
+
+
+    }
 }

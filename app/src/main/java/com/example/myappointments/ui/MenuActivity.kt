@@ -1,13 +1,12 @@
-package com.example.myappointments
+package com.example.myappointments.ui
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.myappointments.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_menu.*
 import com.example.myappointments.PreferenceHelper.set
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.myappointments.R
 
 class MenuActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

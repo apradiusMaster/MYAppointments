@@ -1,10 +1,10 @@
-package com.example.myappointments
+package com.example.myappointments.ui
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myappointments.R
 import com.example.myappointments.model.Appointment
 import kotlinx.android.synthetic.main.item_appointment.view.*
 

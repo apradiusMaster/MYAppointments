@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.*
 import com.example.myappointments.R
 import com.example.myappointments.io.ApiService
+import com.example.myappointments.model.Doctor
 import com.example.myappointments.model.Specialty
 import kotlinx.android.synthetic.main.card_view_step_once.*
 import kotlinx.android.synthetic.main.card_view_step_two.*
@@ -55,6 +56,7 @@ class CreateAppointmentActivity : AppCompatActivity() {
         }
 
         loadSpecialties()
+        listenSpecialtyChanges()
 
 
 
@@ -73,12 +75,16 @@ class CreateAppointmentActivity : AppCompatActivity() {
               ) {
                   if (response.isSuccessful){
                       val specialties = response.body()
-
+                      /*
                       val specialtyOptions = ArrayList<String>()
                       specialties?.forEach {
                           specialtyOptions.add(it.name)
+                      }*/
+                      spinnerSpecialties.adapter = specialties?.let {
+                          ArrayAdapter<Specialty>(this@CreateAppointmentActivity, android.R.layout.simple_list_item_1,
+                              it
+                          )
                       }
-                      spinnerSpecialties.adapter = ArrayAdapter<String>(this@CreateAppointmentActivity, android.R.layout.simple_list_item_1, specialtyOptions)
                   }
               }
 
@@ -90,6 +96,50 @@ class CreateAppointmentActivity : AppCompatActivity() {
           })
 
     }
+
+    private fun listenSpecialtyChanges(){
+        spinnerSpecialties.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                adapter: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                 val specialty = adapter?.getItemAtPosition(position) as Specialty
+                 //Toast.makeText(this@CreateAppointmentActivity, "id: ${specialty.id}", Toast.LENGTH_SHORT).show()
+                loadDoctors(specialty.id)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+    }
+    private fun loadDoctors(specialtyId: Int){
+        val call = apiService.getDoctors(specialtyId)
+        call.enqueue(object : retrofit2.Callback<ArrayList<Doctor>> {
+            override fun onResponse(
+                call: Call<ArrayList<Doctor>>,
+                response: Response<ArrayList<Doctor>>
+            ) {
+                if (response.isSuccessful){
+                    val  doctors = response.body()
+                    spinnerDoctors.adapter = doctors?.let {
+                        ArrayAdapter<Doctor>(this@CreateAppointmentActivity, android.R.layout.simple_list_item_1,
+                            it
+                        )
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<Doctor>>, t: Throwable) {
+                Toast.makeText(this@CreateAppointmentActivity, getString(R.string.error_loading_doctors), Toast.LENGTH_SHORT).show()
+                finish()
+            }
+
+        })
+    }
+
     private  fun showAppointmentDataConfirm(){
          tvConfirmDescription.text = etDescription.text.toString()
          tvConfirmSpecialty.text = spinnerSpecialties.selectedItem.toString()

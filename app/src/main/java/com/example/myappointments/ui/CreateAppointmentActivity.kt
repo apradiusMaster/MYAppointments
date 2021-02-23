@@ -2,23 +2,23 @@ package com.example.myappointments.ui
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.net.DnsResolver
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import com.example.myappointments.R
 import com.example.myappointments.io.ApiService
 import com.example.myappointments.model.Doctor
+import com.example.myappointments.model.Schedule
 import com.example.myappointments.model.Specialty
 import kotlinx.android.synthetic.main.card_view_step_once.*
 import kotlinx.android.synthetic.main.card_view_step_two.*
 import kotlinx.android.synthetic.main.card_view_step_three.*
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.Retrofit
 import java.util.*
-import javax.security.auth.callback.Callback
 import kotlin.collections.ArrayList
 
 class CreateAppointmentActivity : AppCompatActivity() {
@@ -57,12 +57,66 @@ class CreateAppointmentActivity : AppCompatActivity() {
 
         loadSpecialties()
         listenSpecialtyChanges()
+        listenDoctorAndDateChanges()
 
-
-
-        val doctorsOptions = arrayOf("doctor A", "doctor B", "doctor C")
-        spinnerDoctors.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, doctorsOptions)
     }
+
+    private fun listenDoctorAndDateChanges(){
+        //doctors
+        spinnerDoctors.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                adapter: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val doctor = adapter?.getItemAtPosition(position) as Doctor
+                loadHours(doctor.id, etScheduledDate.text.toString())
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+
+        }
+        // scheduled date
+        etScheduledDate.addTextChangedListener(object:   TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                val doctor = spinnerDoctors.selectedItem as Doctor
+                loadHours(doctor.id, etScheduledDate.text.toString())
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val doctor = spinnerDoctors.selectedItem as Doctor
+                loadHours(doctor.id, etScheduledDate.text.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val doctor = spinnerDoctors.selectedItem as Doctor
+                loadHours(doctor.id, etScheduledDate.text.toString())
+            }
+
+        })
+    }
+
+    private  fun loadHours( doctorId: Int, date: String ){
+        val call = apiService.getHours(doctorId, date)
+        call.enqueue(object : retrofit2.Callback<Schedule>{
+            override fun onResponse(call: Call<Schedule>, response: Response<Schedule>) {
+                if (response.isSuccessful){
+                    val schedule = response.body()
+                    Toast.makeText(this@CreateAppointmentActivity, "morning: ${schedule?.mornig?.size}, afternoon: ${schedule?.afternoon?.size}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Schedule>, t: Throwable) {
+                Toast.makeText(this@CreateAppointmentActivity, getString(R.string.error_loading_hours), Toast.LENGTH_SHORT).show()
+            }
+
+        })
+        //Toast.makeText(this, "doctor: $doctorId, date: $date", Toast.LENGTH_SHORT).show()
+    }
+
 
     private fun loadSpecialties(){
 
@@ -148,11 +202,11 @@ class CreateAppointmentActivity : AppCompatActivity() {
          val selectedRadioType = radioGroupType.findViewById<RadioButton>(selectedRadioBtnId)
          tvConfirmType.text = selectedRadioType.text.toString()
          tvConfirmDoctorName.text = spinnerDoctors.selectedItem.toString()
-             tvCofirmDate.text = etSheduledDate.text.toString()
+             tvCofirmDate.text = etScheduledDate.text.toString()
              tvCofirmTime.text = selectedRadioButton?.text.toString()
     }
 
-    fun onClickSheduledDate( v: View?){
+    fun onClickScheduledDate( v: View?){
         val year = selectedCalendar.get(Calendar.YEAR)
         val month = selectedCalendar.get(Calendar.MONTH)
         val dayOfMonth = selectedCalendar.get(Calendar.DAY_OF_MONTH)
@@ -162,7 +216,7 @@ class CreateAppointmentActivity : AppCompatActivity() {
             //Toast.makeText( this, " $y-$m-$d", Toast.LENGTH_SHORT).show()
 
             selectedCalendar.set(y,m,d)
-            etSheduledDate.setText(
+            etScheduledDate.setText(
                 resources.getString(
                     R.string.date_format,
                     y,
@@ -179,10 +233,10 @@ class CreateAppointmentActivity : AppCompatActivity() {
 
         val datePicker = datePickerDialog.datePicker
         val calendar = Calendar.getInstance()
-        calendar.add(Calendar.DAY_OF_MONTH,1)
+        calendar.add(Calendar.DAY_OF_MONTH,1) // +1
         datePicker.minDate = calendar.timeInMillis
         calendar.add(Calendar.DAY_OF_MONTH, 29)
-        datePicker.maxDate = calendar.timeInMillis
+        datePicker.maxDate = calendar.timeInMillis // +30
 
         // show dialog
         datePickerDialog.show()

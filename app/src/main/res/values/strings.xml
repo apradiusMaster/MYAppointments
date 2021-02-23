@@ -35,4 +35,5 @@
     <string name="confirm_appointment_data">Dato de la cita</string>
     <string name="error_loading_specialties">Ocurrio un problema al cargar las especialidades</string>
     <string name="error_loading_doctors">Ocurrio un problema al cargar los médicos</string>
+    <string name="error_loading_hours">Nose han podido cargar las horas</string>
 </resources>

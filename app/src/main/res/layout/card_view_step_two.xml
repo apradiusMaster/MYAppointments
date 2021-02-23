@@ -38,14 +38,15 @@
                 android:text="@string/label_scheduled_date" />
 
             <EditText
-                android:id="@+id/etSheduledDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
+                android:id="@+id/etScheduledDate"
+                android:onClick="onClickScheduledDate"
+                android:inputType="date"
                 android:focusable="false"
-                android:inputType="datetime"
+                android:clickable="true"
                 android:maxLines="1"
-                android:onClick="onClickSheduledDate" />
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

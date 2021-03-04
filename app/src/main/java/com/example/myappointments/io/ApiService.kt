@@ -1,5 +1,6 @@
 package com.example.myappointments.io
 
+import com.example.myappointments.io.response.LoginResponse
 import com.example.myappointments.model.Doctor
 import com.example.myappointments.model.Schedule
 import com.example.myappointments.model.Specialty
@@ -9,6 +10,7 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -25,6 +27,9 @@ interface ApiService {
 
      @GET("shedule/hours")
      fun getHours(@Query("doctor_id") doctoId: Int, @Query("date") date: String): Call<Schedule>
+
+     @POST("login")
+     fun  postLogin(@Query( "email") email: String, @Query( "password") password: String): Call<LoginResponse>
 
     companion object Factory {
         private const val  BASE_URL = "http://64.227.10.80:8000/api/"

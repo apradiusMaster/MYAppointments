@@ -1,3 +1,3 @@
 package com.example.myappointments.model
 
-data class Schedule(val mornig:  ArrayList<HourInterval>, val  afternoon: ArrayList<HourInterval>)
+data class Schedule(val morning:  ArrayList<HourInterval>, val  afternoon: ArrayList<HourInterval>)

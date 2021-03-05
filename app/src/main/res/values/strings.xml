@@ -42,4 +42,6 @@
     <string name="validate_appointment_time">Es necesario definir una hora para la cita</string>
     <string name="error_login_response">Se octuvo una respuesta inesperada del servidor</string>
     <string name="error_invalid_credentials">Las credenciales son incorrectas</string>
+    <string name="error_empty_credentials">Por facor ingrese un correo y contraseña</string>
+    <string name="welcome_name">Bienvenido %1$s</string>
 </resources>

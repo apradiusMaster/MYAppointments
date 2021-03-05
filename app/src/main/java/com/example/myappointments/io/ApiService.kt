@@ -31,6 +31,10 @@ interface ApiService {
      @POST("login")
      fun  postLogin(@Query( "email") email: String, @Query( "password") password: String): Call<LoginResponse>
 
+     @POST("logout")
+
+     fun postLogout(@Query( "authorization") authHeader: String): Call<Void>
+
     companion object Factory {
         private const val  BASE_URL = "http://64.227.10.80:8000/api/"
 

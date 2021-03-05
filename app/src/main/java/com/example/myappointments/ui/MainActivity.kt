@@ -50,8 +50,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun performLogin(){
+        val email = etEmail.text.toString()
+        val password = etPassword.text.toString()
 
-        val call = apiService.postLogin(etEmail.text.toString(), etPassword.text.toString())
+        if (email.trim().isEmpty() ||  password.trim().isEmpty()){
+            toast(getString(R.string.error_empty_credentials))
+            return
+        }
+        val call = apiService.postLogin( email, password)
         call.enqueue(object : retrofit2.Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful){
@@ -63,6 +69,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     if (loginResponse.success){
                         createSessionPreference(loginResponse.jwt)
+                        toast(getString(R.string.welcome_name, loginResponse.user.name))
                         goToMenuActivity()
                     } else {
                             toast(getString(R.string.error_invalid_credentials))

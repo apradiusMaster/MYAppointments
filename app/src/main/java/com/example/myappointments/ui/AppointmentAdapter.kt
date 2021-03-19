@@ -8,7 +8,10 @@ import com.example.myappointments.R
 import com.example.myappointments.model.Appointment
 import kotlinx.android.synthetic.main.item_appointment.view.*
 
-class AppointmentAdapter(  private val appointments: ArrayList<Appointment> ) :  RecyclerView.Adapter<AppointmentAdapter.ViewHolder>() {
+class AppointmentAdapter
+    :  RecyclerView.Adapter<AppointmentAdapter.ViewHolder>() {
+
+    var appointments = ArrayList<Appointment>()
 
     class  ViewHolder(itemView: View) :  RecyclerView.ViewHolder(itemView) {
 
@@ -20,9 +23,27 @@ class AppointmentAdapter(  private val appointments: ArrayList<Appointment> ) : 
         fun bind( appointment : Appointment) = with(itemView){
 
                 tvAppointmentId.setText( context.getString(R.string.item_appointment_id, appointment.id))
-                tvDoctorName.setText(appointment.doctorName)
+                tvDoctorName.setText(appointment.doctor.name)
                 tvScheduledDate.setText(context.getString(R.string.item_appointment_date, appointment.scheduledDate))
                 tvScheduledTime.setText(context.getString(R.string.item_appointment_time, appointment.scheduledTime))
+
+                tvSpecialty.setText(appointment.specialty.name)
+                tvDescription.setText(appointment.description)
+                tvStatus.setText(appointment.status)
+                tvType.setText(appointment.type)
+                tvCreatedAt.setText(context.getString(R.string.item_appointment_created_at, appointment.createdAt))
+
+                ibExpand.setOnClickListener {
+                   if(linearLayoutDetails.visibility == View.VISIBLE){
+                       linearLayoutDetails.visibility = View.GONE
+                       ibExpand.setImageResource(R.drawable.ic_expand_more)
+                   } else{
+                       linearLayoutDetails.visibility = View.VISIBLE
+                       ibExpand.setImageResource(R.drawable.ic_expand_less)
+                         }
+
+                }
+
 
         }
 

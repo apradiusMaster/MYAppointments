@@ -16,7 +16,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="6dp"
+        android:padding="8dp"
         android:orientation="vertical">
         <EditText
             android:layout_width="match_parent"
@@ -42,6 +42,72 @@
             tools:text="A las 3:00 PM"
             android:id="@+id/tvScheduledTime"
             android:gravity="center_horizontal"/>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Confirmada"
+                android:layout_gravity="center"
+                android:id="@+id/tvStatus"
+                android:gravity="center_horizontal"/>
+
+            <ImageButton
+                android:id="@+id/ibExpand"
+                android:src="@drawable/ic_expand_more"
+                tools:src="@drawable/ic_expand_less"
+                android:background="@color/white"
+                android:layout_gravity="end"
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </FrameLayout>
+        <LinearLayout
+             android:id="@+id/linearLayoutDetails"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Oftalmologia"
+                android:id="@+id/tvSpecialty"
+                android:gravity="center_horizontal"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvType"
+                tools:text="consulta"
+                android:gravity="center_horizontal"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvCreatedAt"
+                android:layout_marginTop="8dp"
+                tools:text="Se registro el dia 2021-12-17 con la siguiente descripcion:"
+                android:gravity="center_horizontal"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Tengo dolor de cabeza"
+                android:layout_marginBottom="16dp"
+                android:id="@+id/tvDescription"
+                android:gravity="center_horizontal"
+                />
+
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

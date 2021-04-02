@@ -1,6 +1,7 @@
 package com.example.myappointments.io
 
 import com.example.myappointments.io.response.LoginResponse
+import com.example.myappointments.io.response.SimpleResponse
 import com.example.myappointments.model.Appointment
 import com.example.myappointments.model.Doctor
 import com.example.myappointments.model.Schedule
@@ -11,6 +12,8 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 interface ApiService {
@@ -34,6 +37,25 @@ interface ApiService {
 
      @GET("appointments")
      fun getAppointments(@Header( "Authorization") authHeader: String): Call<ArrayList<Appointment>>
+
+     @POST("appointments")
+     @Headers("Accept: application/json")
+     fun storeAppointments(@Header( "Authorization") authHeader: String,
+                           @Query("description") description: String,
+                           @Query( "specialty_id") specialtyId: Int,
+                           @Query("doctor_id") doctorId: Int,
+                           @Query( "scheduled_date") scheduledDate: String,
+                           @Query(" scheduled_time")  scheduleTime: String,
+                           @Query( "type") type: String
+                           ) : Call<SimpleResponse>
+
+     @POST("register")
+     @Headers("Accept: application/json")
+     fun postRegister(@Query ( "name") name:String,
+                      @Query("email") email:String,
+                      @Query( "password") password: String,
+                      @Query( "password_confirmation") password_confirmation: String
+                        ) : Call<LoginResponse>
 
     companion object Factory {
         private const val  BASE_URL = "http://64.227.10.80:8000/api/"

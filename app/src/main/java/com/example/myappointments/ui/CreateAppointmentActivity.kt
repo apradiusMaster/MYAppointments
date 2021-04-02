@@ -8,17 +8,23 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.*
+import com.example.myappointments.PreferenceHelper
+import com.example.myappointments.PreferenceHelper.get
 import com.example.myappointments.R
 import com.example.myappointments.io.ApiService
+import com.example.myappointments.io.response.SimpleResponse
 import com.example.myappointments.model.Doctor
 import com.example.myappointments.model.Schedule
 import com.example.myappointments.model.Specialty
+import com.example.myappointments.util.toast
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_create_appointment.*
 import kotlinx.android.synthetic.main.card_view_step_once.*
 import kotlinx.android.synthetic.main.card_view_step_two.*
 import kotlinx.android.synthetic.main.card_view_step_three.*
+import kotlinx.android.synthetic.main.item_appointment.*
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 import kotlin.collections.ArrayList
@@ -27,6 +33,9 @@ class CreateAppointmentActivity : AppCompatActivity() {
 
     private val apiService : ApiService by  lazy {
         ApiService.create()
+    }
+    private val preferences by  lazy {
+        PreferenceHelper.defaultPrefs(this)
     }
      private val selectedCalendar = Calendar.getInstance()
     private var selectedTimeBtn: RadioButton? = null
@@ -64,14 +73,59 @@ class CreateAppointmentActivity : AppCompatActivity() {
         }
 
         btnConfirmAppointment.setOnClickListener {
+            performStoreAppointment()
 
-            Toast.makeText(this, "Cita registrada correctamente", Toast.LENGTH_LONG).show()
-            finish()
         }
+
+
 
         loadSpecialties()
         listenSpecialtyChanges()
         listenDoctorAndDateChanges()
+
+    }
+
+    private  fun  performStoreAppointment(){
+        btnConfirmAppointment.isClickable = false
+
+        val jwt = preferences["jwt", ""]
+        val authHeader = "Bearer $jwt"
+        val description = tvConfirmDescription.text.toString()
+        val specialty = spinnerSpecialties.selectedItem as Specialty
+        val doctor = spinnerDoctors.selectedItem as Doctor
+        val scheduledDate = tvConfirmDate.text.toString()
+        val scheduledTime = tvConfirmTime.text.toString()
+        val type = tvConfirmType.text.toString()
+
+        val call = apiService.storeAppointments(
+                authHeader, description,
+                specialty.id, doctor.id,
+                scheduledDate, scheduledTime,
+                type)
+
+        call.enqueue(object: retrofit2.Callback<SimpleResponse>{
+            override fun onResponse(
+                call: Call<SimpleResponse>,
+                response: Response<SimpleResponse>
+            ) {
+                if (response.isSuccessful){
+                    toast(getString(R.string.create_appointments_success))
+                    finish()
+                } else{
+                    toast(getString(R.string.create_appointments_error))
+                    btnConfirmAppointment.isClickable = true
+                    }
+            }
+
+            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
+                toast(t.localizedMessage)
+            }
+
+        })
+
+
+
+
 
     }
 
@@ -231,8 +285,8 @@ class CreateAppointmentActivity : AppCompatActivity() {
          val selectedRadioType = radioGroupType.findViewById<RadioButton>(selectedRadioBtnId)
          tvConfirmType.text = selectedRadioType.text.toString()
          tvConfirmDoctorName.text = spinnerDoctors.selectedItem.toString()
-             tvCofirmDate.text = etScheduledDate.text.toString()
-             tvCofirmTime.text = selectedTimeBtn?.text.toString()
+             tvConfirmDate.text = etScheduledDate.text.toString()
+             tvConfirmTime.text = selectedTimeBtn?.text.toString()
     }
 
     fun onClickScheduledDate( v: View?){

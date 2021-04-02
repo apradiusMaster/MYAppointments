@@ -22,24 +22,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tvAppointmentId"
+            android:editable="false"
             tools:text="Cita Medica #7"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.AppCompat.Medium"
             android:gravity="center_horizontal"
+            android:editable="false"
             android:id="@+id/tvDoctorName"
             tools:text="Medico Test"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text=" Atencion el dia 15/01/2021"
+            android:editable="false"
             android:id="@+id/tvScheduledDate"
             android:gravity="center_horizontal"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="A las 3:00 PM"
+            android:editable="false"
             android:id="@+id/tvScheduledTime"
             android:gravity="center_horizontal"/>
 
@@ -53,6 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="Confirmada"
+                android:editable="false"
                 android:layout_gravity="center"
                 android:id="@+id/tvStatus"
                 android:gravity="center_horizontal"/>
@@ -79,6 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="Oftalmologia"
+                android:editable="false"
                 android:id="@+id/tvSpecialty"
                 android:gravity="center_horizontal"
                 />
@@ -87,6 +93,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tvType"
                 tools:text="consulta"
+                android:editable="false"
                 android:gravity="center_horizontal"
                 />
             <EditText
@@ -95,11 +102,13 @@
                 android:id="@+id/tvCreatedAt"
                 android:layout_marginTop="8dp"
                 tools:text="Se registro el dia 2021-12-17 con la siguiente descripcion:"
+                android:editable="false"
                 android:gravity="center_horizontal"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="Tengo dolor de cabeza"
+                android:editable="false"
                 android:layout_marginBottom="16dp"
                 android:id="@+id/tvDescription"
                 android:gravity="center_horizontal"

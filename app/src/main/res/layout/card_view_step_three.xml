@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cvStep3"
     android:visibility="gone"
+    tools:visibility="visible"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="8dp"
@@ -119,7 +120,7 @@
                     android:text="@string/label_scheduled_date" />
 
                 <TextView
-                    android:id="@+id/tvCofirmDate"
+                    android:id="@+id/tvConfirmDate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -139,7 +140,7 @@
                     android:text="@string/label_scheduled_time" />
 
                 <TextView
-                    android:id="@+id/tvCofirmTime"
+                    android:id="@+id/tvConfirmTime"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

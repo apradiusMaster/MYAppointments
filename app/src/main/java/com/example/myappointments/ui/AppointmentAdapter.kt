@@ -1,8 +1,12 @@
 package com.example.myappointments.ui
 
+import android.os.Build
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myappointments.R
 import com.example.myappointments.model.Appointment
@@ -20,7 +24,8 @@ class AppointmentAdapter
           val tvScheduledDate = itemView.tvScheduledDate
           val  tvScheduledTime = itemView.tvScheduledTime */
 
-        fun bind( appointment : Appointment) = with(itemView){
+        @RequiresApi(Build.VERSION_CODES.KITKAT)
+        fun bind(appointment : Appointment) = with(itemView){
 
                 tvAppointmentId.setText( context.getString(R.string.item_appointment_id, appointment.id))
                 tvDoctorName.setText(appointment.doctor.name)
@@ -34,6 +39,7 @@ class AppointmentAdapter
                 tvCreatedAt.setText(context.getString(R.string.item_appointment_created_at, appointment.createdAt))
 
                 ibExpand.setOnClickListener {
+                    TransitionManager.beginDelayedTransition(parent as ViewGroup, AutoTransition())
                    if(linearLayoutDetails.visibility == View.VISIBLE){
                        linearLayoutDetails.visibility = View.GONE
                        ibExpand.setImageResource(R.drawable.ic_expand_more)
@@ -62,6 +68,7 @@ class AppointmentAdapter
 
 
     // binds data
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val appointment = appointments[position]

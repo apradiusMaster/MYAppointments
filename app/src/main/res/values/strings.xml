@@ -45,4 +45,12 @@
     <string name="error_empty_credentials">Por facor ingrese un correo y contraseña</string>
     <string name="welcome_name">Bienvenido %1$s</string>
     <string name="item_appointment_created_at">Esta cita se registró el dia %1$s con la siguiente descripcion:</string>
+    <string name="create_appointments_success">Cita registrada correctamente</string>
+    <string name="create_appointments_error">Ocurrio un error inesperado registrando la cita medica</string>
+    <string name="label_password_confirmation">Confirmar Clave</string>
+    <string name="error_register_empty_fields">Por favor completar todos los campos</string>
+    <string name="error_register_password_do_not_match">Las contraseñas no coinciden</string>
+    <string name="error_register_password_length">Minimo   6 caracteres la contraseña </string>
+
+
 </resources>
